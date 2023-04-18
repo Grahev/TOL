@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
+# from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -36,10 +36,10 @@ class Project(models.Model):
     order_req_by_date = models.DateField(blank=True, null=True)
     handling_floor_plans =models.BooleanField(default=False)
     comments = models.CharField(max_length=1000, blank=True, null=True)
-    date_sent_for_approval = ArrayField(models.DateField(), null=True, blank=True)
-    date_approval_recived = ArrayField(models.DateField(), null=True, blank=True)
-    date_into_production = ArrayField(models.DateField(), null=True, blank=True)
-    date_dispatch = ArrayField(models.DateField(), null=True, blank=True)
+    date_sent_for_approval = models.DateField(max_length=25, null=True, blank=True)
+    date_approval_recived = models.DateField(max_length=25, null=True, blank=True)
+    date_into_production = models.DateField(max_length=25, null=True, blank=True)
+    date_dispatch = models.DateField(max_length=25, null=True, blank=True)
     notes = models.ForeignKey('ProjectNotes', on_delete=models.CASCADE, related_name='project_notes', blank=True, null=True)
 
     def __str__(self):
