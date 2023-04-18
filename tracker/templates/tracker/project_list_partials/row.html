@@ -1,0 +1,35 @@
+<tr>
+    <th scope="row">{{project.job_no}}</th>
+    <td class='text-center'><a href="{% url 'tracker:project_detail' project.pk %}">{{project.job_type}}</a></td>
+    <td class='text-center'>{{project.customer_order_ref}}</td>
+    <td class='text-center'>{{project.order_date|date:'d/m/Y'}}</td>
+    <td class='text-center'>{{project.process_date|date:'d/m/Y'}}</td>
+    <td class='text-center'>{{project.order_value}}</td>
+    <td class='text-center'>{{project.customer}}</td>
+    <td class='text-center'>{{project.account_type}}</td>
+    <td class='text-center'>{{project.project_engineer}}</td>
+    <td class='text-center bg-{{project.status.bootstrap_colour_class}}'>{{project.status}}</td>
+    <td class='text-center'>{{project.doors_s}}</td>
+    <td class='text-center'>{{project.doors_d}}</td>
+    <td class='text-center'>{{project.order_req_by_date|date:'d/m/Y'}}</td>
+    <td class='text-center'>
+        {% if project.handling_floor_plans == True %}
+        <i class="bi bi-check-circle"></i>
+        {% else %}
+        <i class="bi bi-x-circle"></i>
+        {% endif %}
+    </td>
+    <td class='text-center'>{{project.comments}}</td>
+    <td class='text-center'>
+        {{project.waiting.date_time|date:'d/m/Y'}}
+    </td>
+    <td class='text-center'>
+        {{project.approved.date_time|date:'d/m/Y'}}
+    </td>
+    <td class='text-center'>
+        {{project.production.date_time|date:'d/m/Y'}}
+    </td>
+    <td class='text-center'> 
+        {{project.dispatch.date_time|date:'d/m/Y'}}
+</td>
+  </tr>

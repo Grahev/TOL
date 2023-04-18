@@ -1,0 +1,50 @@
+{% comment %} <div class="accordion-item">
+    <h2 class="accordion-header" id="{{project.id}}">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{project.id}}" aria-expanded="false" aria-controls="collapseOne">
+        Accordion Item #1
+      </button>
+    </h2>
+    <div id="{{project.id}}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
+      <div class="accordion-body">
+        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+  </div> {% endcomment %}
+
+  <div class="accordion" id="accordionExample">
+    {% for item in projects %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+          {{item.job_no}} - {{item.customer}} - {{item.status}} - {{item.project_engineer}}
+        </button>
+      </h2>
+      <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <div class=" container text-center">
+            <div class="row border-top border-start border-end">
+                <div class="col-1 align-self-center">Job No.</div><div class="col-1 border-end align-self-center">{{item.job_no}}</div>
+                <div class="col-1 align-self-center">Customer</div><div class="col-1 border-end align-self-center">{{item.customer}}</div>
+                <div class="col-2 align-self-center">Customer Order Ref.</div><div class="col-2 border-end align-self-center">{{item.customer_order_ref}}</div>
+                <div class="col-2 align-self-center">Order Value:</div><div class="col-2  align-self-center">£{{item.order_value}}</div>
+            </div>
+            <div class="row border-top border-start border-end">
+                <div class="col-2 align-self-center">Account Type:</div><div class="col-1 border-end align-self-center">{{item.account_type}}</div>
+                {% if item.status == 'Ordered' %}
+                    <div class="col-1 align-self-center">Status:</div><div class="col-1 border-end align-self-center bg-danger">{{item.status}}</div>
+                {% elif item.status == 'Waiting on Approval' %}
+                    <div class="col-1 align-self-center">Status:</div><div class="col-3 border-end align-self-center bg-warning ">{{item.status}}</div>
+                {% elif item.status == 'Approved' %}
+                <div class="col-1 align-self-center">Status:</div><div class="col-3 border-end align-self-center bg-success ">{{item.status}}</div>
+                {% else %}
+                <div class="col-1 align-self-center">Status:</div><div class="col-3 border-end align-self-center ">{{item.status}}</div>
+                {% endif %}
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  

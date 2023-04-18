@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="container ">
+        <!--section to display all information start-->
+        <div class="row ">
+            <div class="col d-flex justify-content-evenly align-items-center mt-2 mb-2 border mx-2">
+                <label for="">Job No:</label>
+                <p class="h5 text-center my-auto">{{project.job_no}}</p>
+            </div>
+            <div class="col d-flex justify-content-evenly align-items-center mt-2 mb-2 border mx-2">
+                <label for="">Customer:</label>
+                <p class="h5 text-center my-auto">{{project.customer}}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col d-flex justify-content-evenly align-items-center border mx-2 my-1 bg-{{project.status.bootstrap_colour_class}}">
+                <label for="">Status: </label>
+                {{project.status}}
+            </div>
+            <div class="col d-flex justify-content-evenly align-items-center border mx-2 my-1">
+                <label for="">Order Date:</label>
+                {{project.order_date|date:"d/m/Y"}}
+            </div>
+            <div class="col d-flex justify-content-evenly align-items-center border mx-2 my-1">
+                <label for="">Process Date:</label>
+                {{project.process_date|date:"d/m/Y"}}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col d-flex justify-content-evenly align-items-center border mx-2 my-1">
+                <label for="">Customer Order Ref. </label>
+                {{project.customer_order_ref}}
+            </div>
+            <div class="col d-flex justify-content-evenly align-items-center border mx-2 my-1">
+                <label for="">Order Value </label>
+                £{{project.order_value}}
+            </div>
+            <div class="col d-flex justify-content-evenly align-items-center border mx-2 my-1">
+                <label for="">Account Type: </label>
+                {{project.account_type}}
+            </div>
+            
+        </div>
+
+        <div class="row">
+            
+            <div class="col d-flex justify-content-evenly align-items-center border mx-2 my-1">
+                <label for="">Order Req. by Date </label>
+                {{project.order_req_by_date|date:"d/m/Y"}}
+            </div>
+            <div class="col d-flex justify-content-evenly align-items-center border mx-2 my-1">
+                <label for="">Sent For Approval </label>
+                {% if project.approved %}
+                    {{project.approved.date_time|date:'d/m/Y'}} 
+                {% else %}
+                    <p class="my-auto">N/A</p>
+                {% endif %}
+                
+            </div>
+            <div class="col d-flex justify-content-evenly align-items-center border mx-2 my-1">
+                <label for="">Approval Recived </label>
+                {% if project.date_approval_recived %}
+                    {{project.date_approval_recived|last|date:"d/m/Y"}}
+                {% else %}
+                    <p class="my-auto">N/A</p>
+                {% endif %}
+                
+            </div>
+            <div class="col d-flex justify-content-evenly align-items-center border mx-2 my-1">
+                <label for="">Date Into Prod. </label>
+                {% if project.date_into_production %}
+                    {{project.date_into_production|last|date:"d/m/Y"}}
+                {% else %}
+                    <p class="my-auto">N/A</p>
+                {% endif %}
+                
+            </div>
+            <div class="col d-flex justify-content-evenly align-items-center border mx-2 my-1">
+                <label for="">Dispatch Date </label>
+                {% if project.date_dispatch %}
+                    {{project.date_dispatch|last|date:"d/m/Y"}}
+                {% else %}
+                    <p class="my-auto">N/A</p>
+                {% endif %}
+                
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col d-flex justify-content-evenly align-items-center border mx-2 my-1">
+                <label for="">Project Engineer </label>
+                {{project.project_engineer}}
+            </div>
+            <div class="col d-flex justify-content-evenly align-items-center border mx-2 my-1">
+                <label for="">Singles: </label>
+                {{project.doors_s}}
+            </div>
+            <div class="col d-flex justify-content-evenly align-items-center border mx-2 my-1">
+                <label for="">Doubles: </label>
+                {{project.doors_d}}
+            </div>
+        </div>
+        <!--section to display all information end-->
+
+        <!--sections with status change buttons-->
+        <div class="row mt-3">
+            <div class="col">
+                
+                <button class="btn btn-warning" type="button" onclick="window.location.href='{{ status_urls.Waiting }}'">Waiting on approval</button>
+                <button class="btn btn-info" type="button" onclick="window.location.href='{{ status_urls.Approved }}'">Approved</button>
+                <button class="btn btn-success" type="button" onclick="window.location.href='{{ status_urls.Production }}'">Production</button>
+                <button class="btn btn-secondary" type="button" onclick="window.location.href='{{ status_urls.Dispatch }}'">Dispatch</button>
+            </div>
+        </div>
+        <!--sections with status change buttons end-->
+        
+        <!--Comments sections start-->
+        <div class="row mt-3">
+            <div class="h4">Comments:</div>
+            <p>{{project.comments}}</p>
+        </div>
+        <!--Comments sections ends-->
+
+        <!--message section start-->
+        {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+        <!--message section end-->
+       
+        <!--Notes section start-->
+        <div class="row mt-4">
+            <div class="h4">Notes:</div><a href="{% url 'tracker:create_note' project.pk %}" class=""><i class="bi bi-plus-circle-fill"></i></a>
+                {% for note in project.project_notes.all %}
+                <div class="card my-1">
+                    <div class="card-body">
+                      <h5 class="card-title">{{note.text}}</h5>
+                      <p class="card-text">{{note.user}} - {{note.create_date|date:"d/m/Y"}} </p>
+                      <a href="{% url 'tracker:delete_note' note.pk %}"><i class="bi bi-trash3"></i></a>
+                      
+                    </div>
+                  </div>
+                {% empty %}
+                    <li>No notes found for this project.</li>
+                {% endfor %}
+        </div>
+        <!--Notes section end-->
+    </div>
+    
+</div>
+
+{% endblock content %}

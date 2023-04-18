@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="continer">
+        <h1>PROJECT LIST</h1>
+        <div class="accordion" id="accordionExample">
+            
+            {% comment %} {% include "tracker/project_list_partials/acordion_item.html" %} {% endcomment %}
+            
+           
+            
+          </div>
+          <form method="get">
+            {{ projects.form }}
+            <input type="submit" />
+        </form>
+        {% include "tracker/project_list_partials/table.html" %}
+    </div>
+{% endblock content %}
