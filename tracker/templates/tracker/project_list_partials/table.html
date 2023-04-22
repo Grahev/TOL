@@ -1,7 +1,7 @@
-<table class="table table-striped table-bordered ">
+<table class="table table-striped table-bordered " id="myTable">
     <thead>
         <tr>
-        </tr>
+        
         <th scope='col' class='text-center'>Job No</th>
         <th scope='col' class='text-center'>Job Type</th>
         <th scope='col' class='text-center'>Customer Order Ref</th>
@@ -21,6 +21,7 @@
         <th scope='col' class='text-center'>Date Approval Recived</th>
         <th scope='col' class='text-center'>Date Into Production</th>
         <th scope='col' class='text-center'>Dispatch Date</th>
+        </tr>
     </thead>
     <tbody>
         {% for project in projects.qs %}

@@ -15,9 +15,6 @@
             <a class="nav-link" href="{% url 'tracker:project_list'%}">Projects</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="{% url 'authenticator:logout' %}">Logout</a>
           </li>
           <li class="nav-item">
@@ -28,13 +25,16 @@
             {% endif %}
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Projects</a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+              <a class="dropdown-item" href="{% url 'tracker:project_list'%}">All</a>
+              <a class="dropdown-item" href="{% url 'tracker:project_list'%}?job_no=&customer=&project_engineer=&status=1">Ordered</a>
+              <a class="dropdown-item" href="{% url 'tracker:project_list'%}?job_no=&customer=&project_engineer=&status=2">Waiting on approval</a>
+              <a class="dropdown-item" href="{% url 'tracker:project_list'%}?job_no=&customer=&project_engineer=&status=3">Approved</a>
+              <a class="dropdown-item" href="{% url 'tracker:project_list'%}?job_no=&customer=&project_engineer=&status=4">Production</a>
+              <a class="dropdown-item" href="{% url 'tracker:project_list'%}?job_no=&customer=&project_engineer=&status=5">Dispatch</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Separated link</a>
+              <a class="dropdown-item" href="{%url 'tracker:project_create'%}">Create New Project</a>
             </div>
           </li>
         </ul>

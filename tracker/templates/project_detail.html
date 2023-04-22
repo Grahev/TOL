@@ -89,6 +89,7 @@
                 {% endif %}
                 
             </div>
+            
         </div>
 
         <div class="row">
@@ -107,6 +108,16 @@
         </div>
         <!--section to display all information end-->
 
+        <!-- message section start-->
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <!-- message section end-->
+
         <!--sections with status change buttons-->
         <div class="row mt-3">
             <div class="col">
@@ -115,6 +126,7 @@
                 <button class="btn btn-info" type="button" onclick="window.location.href='{{ status_urls.Approved }}'">Approved</button>
                 <button class="btn btn-success" type="button" onclick="window.location.href='{{ status_urls.Production }}'">Production</button>
                 <button class="btn btn-secondary" type="button" onclick="window.location.href='{{ status_urls.Dispatch }}'">Dispatch</button>
+                <a href="{% url 'tracker:project_edit' project.pk %}"><i class="bi bi-pencil-square"></i></a>
             </div>
         </div>
         <!--sections with status change buttons end-->

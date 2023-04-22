@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container">
+	<form method="POST">
+		{% csrf_token %}
+		<div class="row mt-5">
+			<div class="col-2">{{form.job_no|as_crispy_field}}</div>
+			<div class="col-2">{{form.customer|as_crispy_field}}</div>
+			<div class="col-2">{{form.job_type|as_crispy_field}}</div>
+			<div class="col-2">{{form.customer_order_ref|as_crispy_field}}</div>
+			<div class="col-2">{{form.order_date|as_crispy_field}}</div>
+			<div class="col-2">{{form.process_date|as_crispy_field}}</div>
+		</div>
+		<div class="row">
+			<div class="col-2">{{form.order_value|as_crispy_field}}</div>
+			<div class="col-2">{{form.account_type|as_crispy_field}}</div>
+			<div class="col-2">{{form.doors_s|as_crispy_field}}</div>
+			<div class="col-2">{{form.doors_d|as_crispy_field}}</div>
+			<div class="col-2">{{form.order_req_by_date|as_crispy_field}}</div>
+		</div>
+		<div class="row">
+			<div class="col-10">{{form.comments|as_crispy_field}}</div>
+			<div class="col-2 my-auto">{{form.handling_floor_plans|as_crispy_field}}</div>
+		</div>
+		<button type="submit" class="btn btn-success">Create</button>
+        <a href="#"><button onclick="history.back()" class="btn btn-danger">Cancle</button></a>
+		{% comment %} {{form|crispy}} {% endcomment %}
+	</form>
+	{% if project.pk %}
+		<a href="{% url 'edit_project' pk=project.pk %}">Edit this project</a>
+	{% endif %}
+    </div>
+
+{% endblock content %}

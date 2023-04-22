@@ -7,7 +7,8 @@ app_name = 'tracker'
 urlpatterns = [
     path('api/all', views.project_list_api),
     path('', views.project_list, name='project_list'),
-    path('engineer', views.project_by_engineer, name='project_list_by_engineer'),
+    path('create/', views.project_create, name='project_create'),
+    path('engineer/', views.project_by_engineer, name='project_list_by_engineer'),
     path('<int:pk>/', views.project_detail, name='project_detail'),
     path('<int:pk>/edit/', views.project_edit, name='project_edit'),
     path('<int:pk>/note/create/', views.create_note, name='create_note'),

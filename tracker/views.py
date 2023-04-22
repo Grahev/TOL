@@ -3,10 +3,11 @@ from django.http import JsonResponse
 from .models import Project, ProjectNotes, Status, ProjectStatusHistory
 from .serializers import ProjectSerializer
 from rest_framework.decorators import api_view
-from .forms import ProjectForm, ProjectNotesForm
+from .forms import ProjectForm, ProjectNotesForm, ProjectCreateForm
 from .filters import ProjectFilter
 from django.contrib import messages
 from django.utils import timezone
+
 
 
 # Create your views here.
@@ -50,17 +51,34 @@ def update_project_status(request, pk, status):
     return redirect('tracker:project_detail', pk=project.pk)
     # return redirect(reverse('project_detail', args=[project_id]))
 
+#create project view
+def project_create(request):
+    if request.method == 'POST':
+        form = ProjectCreateForm(request.POST)
+        if form.is_valid():
+            project = form.save()
+            return redirect('tracker:project_list')
+    else:
+        form = ProjectCreateForm()
+
+    return render(request, 'project_create.html', context = {'form':form})
+
+#edit project view
 def project_edit(request, pk):
     project = get_object_or_404(Project, pk=pk)
-    form = ProjectForm(request.POST or None, instance=project)
-    if form.is_valid():
-        form.save()
+    if request.user.is_staff:
+        form = ProjectForm(request.POST or None, instance=project)
+        if form.is_valid():
+            form.save()
+            return redirect('tracker:project_detail', pk=project.pk)
+        return render(request, 'project_form.html', {'form': form})
+    else:
+        messages.error(request, 'You do not have permission to edit.')
         return redirect('tracker:project_detail', pk=project.pk)
-    return render(request, 'project_form.html', {'form': form})
 
 #project by engineer/user view witch are loged in
 def project_by_engineer(request):
-    user = request.user.username
+    user = request.user
     projects = ProjectFilter(request.GET, queryset=Project.objects.filter(project_engineer=user))
 
     context = {'projects': projects}
