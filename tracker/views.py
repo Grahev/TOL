@@ -28,6 +28,7 @@ def project_detail(request,pk):
         'Ordered': reverse('tracker:update_project_status', args=[project.pk, 'Ordered']),
         'Production': reverse('tracker:update_project_status', args=[project.pk, 'Production']),
         'Dispatch': reverse('tracker:update_project_status', args=[project.pk, 'Dispatch']),
+        'Drawing': reverse('tracker:update_project_status', args=[project.pk, 'Drawing']),
     }
 
     context = {
