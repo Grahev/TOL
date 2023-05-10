@@ -1,6 +1,6 @@
 from django.db import models
 # from django.contrib.postgres.fields import ArrayField
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 # Create your models here.
 
@@ -29,7 +29,7 @@ class Project(models.Model):
     order_value = models.IntegerField()
     customer = models.CharField(max_length=55)
     account_type = models.CharField(max_length=25)
-    project_engineer = models.ForeignKey(User, on_delete=models.CASCADE,blank=True, null=True)
+    project_engineer = models.ForeignKey(User, on_delete=models.CASCADE,blank=True, null=True, limit_choices_to={'groups__name':'Project engineer'})
     # project_engineer = models.CharField(max_length=50, blank=True, null=True)
     status = models.ForeignKey(Status, on_delete=models.CASCADE, related_name='projects', default=1)
     doors_s = models.IntegerField(default=0)

@@ -26,4 +26,8 @@ class ProjectNotesForm(forms.ModelForm):
         model = ProjectNotes
         fields = ('text',)
 
+class ProjectEngineerForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ('project_engineer','status')
 

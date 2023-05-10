@@ -7,7 +7,10 @@
     <td class='text-center'>{{project.order_value}}</td>
     <td class='text-center'>{{project.customer}}</td>
     <td class='text-center'>{{project.account_type}}</td>
-    <td class='text-center'>{{project.project_engineer}}</td>
+
+    <td class='text-center'><a href="{% url 'tracker:project_engineer_assign' project.pk %}">{{project.project_engineer}}</a></td>
+
+
     <td class='text-center bg-{{project.status.bootstrap_colour_class}}'>{{project.status}}</td>
     <td class='text-center'>{{project.doors_s}}</td>
     <td class='text-center'>{{project.doors_d}}</td>

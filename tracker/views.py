@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .models import Project, ProjectNotes, Status, ProjectStatusHistory
 from .serializers import ProjectSerializer
 from rest_framework.decorators import api_view
-from .forms import ProjectForm, ProjectNotesForm, ProjectCreateForm
+from .forms import ProjectForm, ProjectNotesForm, ProjectCreateForm, ProjectEngineerForm
 from .filters import ProjectFilter
 from django.contrib import messages
 from django.utils import timezone
@@ -11,13 +12,14 @@ from django.utils import timezone
 
 
 # Create your views here.
-
+@login_required
 def project_list(request):
     projects = ProjectFilter(request.GET, queryset=Project.objects.all())
 
     context = {'projects': projects}
     return render (request, 'project_list.html', context)
 
+@login_required
 def project_detail(request,pk):
     project = Project.objects.get(pk=pk)
 
@@ -37,6 +39,7 @@ def project_detail(request,pk):
     }
     return render (request, 'project_detail.html', context)
 
+@login_required
 def update_project_status(request, pk, status):
     project = Project.objects.get(id=pk)
     project.status = Status.objects.get(name=status) 
@@ -53,6 +56,7 @@ def update_project_status(request, pk, status):
     # return redirect(reverse('project_detail', args=[project_id]))
 
 #create project view
+@login_required
 def project_create(request):
     if request.method == 'POST':
         form = ProjectCreateForm(request.POST)
@@ -65,6 +69,7 @@ def project_create(request):
     return render(request, 'project_create.html', context = {'form':form})
 
 #edit project view
+@login_required
 def project_edit(request, pk):
     project = get_object_or_404(Project, pk=pk)
     if request.user.is_staff:
@@ -78,6 +83,7 @@ def project_edit(request, pk):
         return redirect('tracker:project_detail', pk=project.pk)
 
 #project by engineer/user view witch are loged in
+@login_required
 def project_by_engineer(request):
     user = request.user
     projects = ProjectFilter(request.GET, queryset=Project.objects.filter(project_engineer=user))
@@ -86,6 +92,7 @@ def project_by_engineer(request):
     return render(request, 'project_list.html', context)
 
 #create note for specified job only- view
+@login_required
 def create_note(request, pk):
     if request.method == "POST":
         form = ProjectNotesForm(request.POST)
@@ -101,6 +108,7 @@ def create_note(request, pk):
     return render(request,'create_note.html', {'form':form})
 
 #delete note view
+@login_required
 def delete_note(request, pk):
     note = get_object_or_404(ProjectNotes, pk=pk)
     if request.user == note.user:
@@ -109,6 +117,36 @@ def delete_note(request, pk):
     else:
         messages.warning(request, "You don't have permission to delete this note.")
         return redirect('tracker:project_detail', pk=note.project.pk)
+    
+#assign project engineer view
+@login_required
+def project_engineer_assign(request,pk):
+    project = get_object_or_404(Project, pk=pk)
+    if request.user.is_staff:
+    # if request.method == 'POST':
+        form = ProjectEngineerForm(request.POST, instance=project)
+        if form.is_valid():
+            status = form.cleaned_data['status']
+            # project.project_engineer = form.cleaned_data['project_engineer']
+            form.save()
+            
+            ProjectStatusHistory.objects.create(
+            project=project,
+            status=Status.objects.get(name=status),
+            user = request.user,
+            date_time=timezone.now(),
+    )
+            return redirect('tracker:project_list')
+        context = {
+        'form':form,
+        'project':project
+    }
+        return render(request,'project_engineer_assign.html', context=context)
+    else:
+        messages.error(request, 'You do not have permission to edit.')
+        return redirect('tracker:project_list')
+    
+        
     
 #API views
 # @api_view('GET')
